@@ -185,6 +185,8 @@ export class CryptoExchangeService {
 
   /**
    * Get data and fee structure for the Binance.US exchange.
+   * 
+   * Fee Schedule: https://www.binance.us/en/fee/schedule
    */
    private getBinanceUsData(): Exchange {
     let tradingFees = new Map<FeeType, Array<Fee>>();
@@ -199,7 +201,14 @@ export class CryptoExchangeService {
     const withdrawalFees: Array<WithdrawalFee> = [
       { asset: this.findAsset('BTC'), withdrawalFee: 0.0005, minimumWithdrawalAmount: 0.001 },
       { asset: this.findAsset('ETH'), withdrawalFee: 0.007, minimumWithdrawalAmount: 0.003 },
-      { asset: this.findAsset('ADA'), withdrawalFee: 1, minimumWithdrawalAmount: 8 }
+      { asset: this.findAsset('ADA'), withdrawalFee: 1, minimumWithdrawalAmount: 8 },
+      { asset: this.findAsset('SOL'), withdrawalFee: 0.01, minimumWithdrawalAmount: 0.02 },
+      { asset: this.findAsset('LINK'), withdrawalFee: 0.68, minimumWithdrawalAmount: 1.36 },
+      { asset: this.findAsset('MATIC'), withdrawalFee: 15, minimumWithdrawalAmount: 30 },
+      { asset: this.findAsset('FIL'), withdrawalFee: 0.001, minimumWithdrawalAmount: 0.01 },
+      { asset: this.findAsset('XRP'), withdrawalFee: 0.25, minimumWithdrawalAmount: 0.26 },
+      { asset: this.findAsset('LTC'), withdrawalFee: 0.001, minimumWithdrawalAmount: 0.002 },
+      { asset: this.findAsset('ALGO'), withdrawalFee: 0.01, minimumWithdrawalAmount: 1 },
     ];
 
     return this.generateExchange('Binance.US', tradingFees, withdrawalFees, 'https://www.binance.us/');
@@ -207,6 +216,8 @@ export class CryptoExchangeService {
   
     /**
      * Get data and fee structure for the Crypto.com exchange. 
+     * 
+     * Fee Schedule: https://crypto.com/exchange/document/fees-limits?utm_adname=&utm_adextension=
      */
      private getCryptoDotComData(): Exchange {
       let tradingFees = new Map<FeeType, Array<Fee>>();
@@ -242,8 +253,17 @@ export class CryptoExchangeService {
 
       const withdrawalFees: Array<WithdrawalFee> = [
         { asset: this.findAsset('BTC'), withdrawalFee: 0.0005, minimumWithdrawalAmount: 0.0004 },
-        { asset: this.findAsset('ETH'), withdrawalFee: 0.016, minimumWithdrawalAmount: 0.008 },
-        { asset: this.findAsset('ADA'), withdrawalFee: 2, minimumWithdrawalAmount: 100 }
+        { asset: this.findAsset('ETH'), withdrawalFee: 0.008, minimumWithdrawalAmount: 0.016 },
+        { asset: this.findAsset('ADA'), withdrawalFee: 0.8, minimumWithdrawalAmount: 1.6  },
+        { asset: this.findAsset('DOT'), withdrawalFee: 0.1, minimumWithdrawalAmount: 2.5 },
+        { asset: this.findAsset('SOL'), withdrawalFee: 0.005, minimumWithdrawalAmount: 0.01 },
+        { asset: this.findAsset('LINK'), withdrawalFee: 1.08, minimumWithdrawalAmount: 8 },
+
+        { asset: this.findAsset('MATIC'), withdrawalFee: 20, minimumWithdrawalAmount: 40 },
+        { asset: this.findAsset('FIL'), withdrawalFee: 0.01, minimumWithdrawalAmount: 0.03 },
+        { asset: this.findAsset('XRP'), withdrawalFee: 1, minimumWithdrawalAmount: 25 },
+        { asset: this.findAsset('LTC'), withdrawalFee: 0.001, minimumWithdrawalAmount: 0.002 },
+        { asset: this.findAsset('ALGO'), withdrawalFee: 0.5, minimumWithdrawalAmount: 1 },
       ];
   
       return this.generateExchange('Crypto.com', tradingFees, withdrawalFees, 'https://crypto.com/us/');
