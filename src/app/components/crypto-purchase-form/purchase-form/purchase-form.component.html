@@ -1,0 +1,40 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column ms-3 me-3">
+
+    <div>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>How much are you trying to buy?</mat-label>
+            <!-- <span matPrefix>$ &nbsp;</span> -->
+            <input matInput placeholder="100" formControlName="purchaseAmount">
+        </mat-form-field>
+    </div>
+
+    <div>What type of order are you going to make?</div>
+    <div>
+        <mat-radio-group aria-label="Select an option" name="orderType" formControlName="orderType">
+            <mat-radio-button class="me-2" value="market" checked>Market</mat-radio-button>
+            <mat-radio-button value="limit">Limit</mat-radio-button>
+          </mat-radio-group>
+    </div>
+
+    <div class="mt-4">Do you plan on moving the token out of the exchange?</div>
+    <div>
+        <mat-checkbox formControlName="withdrawFunds">Yes I plan on moving it</mat-checkbox>
+    </div>
+
+    <div *ngIf="form.get('withdrawFunds')?.value" class="mt-4">
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Which asset do you plan to buy?</mat-label>
+            <mat-select formControlName="assetToWithdraw">
+                <mat-option *ngFor="let asset of assets" [value]="asset">
+                    {{asset.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="align-self-center">
+        <button mat-flat-button type="submit" color="primary" class="mt-4">
+            COMPARE!
+        </button>
+    </div>
+</form>

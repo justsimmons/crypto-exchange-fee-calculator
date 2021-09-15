@@ -1,0 +1,85 @@
+<mat-sidenav-container class="container" autosize>
+    <mat-sidenav #sidenav class="form-sidenav" mode="side" opened>
+        
+        <!-- Toggle button to close sidenav -->
+        <div class="me-2 ms-2 mb-1">
+            <button mat-icon-button class="mt-1" (click)="toggleSideNav()" aria-label="Collapse sidenav">
+                <mat-icon>{{ isSideNavExpanded ? "keyboard_backspace" : "dehaze"}}</mat-icon>
+            </button>
+        </div>
+        <mat-divider *ngIf="!isSideNavExpanded"></mat-divider>
+
+        <app-purchase-form 
+            [style.display]="isSideNavExpanded ? '' : 'none'"
+            (userInput)="calculateFees($event)">
+        </app-purchase-form>
+    </mat-sidenav>
+    
+    <div class="inset flex-column">
+        
+        <div class="align-center">
+            <h1>Which Exchange has the lowest fees?</h1>
+        </div>
+    
+        <div class="align-center">
+            <p>Have you ever wondered which cryptocurrency exchange has the lowest fees? Well now you can find out! Just fill out the form based off of the amount you plan on buying, and well compare rates across all the excanges that are available in the US.</p>
+        </div>
+
+        <div *ngIf="feesList.length" class="flex-column">
+
+            <div class="align-center">
+                <h2>The cheapest exchange for you to use is {{feesList[0].exchange.name}}!</h2>
+            </div>
+
+
+            <div>
+                <table mat-table #table [dataSource]="feesList">
+                    <ng-container matColumnDef="rank">
+                        <th mat-header-cell *matHeaderCellDef> Ranking </th>
+                        <td mat-cell *matCellDef="let index = index"> {{index + 1}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="exchange">
+                        <th mat-header-cell *matHeaderCellDef> Exchange Name </th>
+                        <td mat-cell *matCellDef="let exchange">
+                            <a href={{exchange.exchange.url}}>{{exchange.exchange.name}}</a>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fees">
+                        <th mat-header-cell *matHeaderCellDef> Fees Paid to Execute Trade </th>
+                        <td mat-cell *matCellDef="let exchange"> {{exchange.transactionFee | currency}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="withdrawalFees">
+                        <th mat-header-cell *matHeaderCellDef> Fees Paid Withdraw Funds </th>
+                        <td mat-cell *matCellDef="let exchange">
+                            <ng-container *ngIf="assetPriceInFiat && exchange.withdrawalFeeInKind">
+                                {{exchange.withdrawalFeeInKind * assetPriceInFiat | currency}} /
+                            </ng-container>
+                            {{exchange.withdrawalFeeInKind}} {{exchange.asset.symbol}} 
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="total">
+                        <th mat-header-cell *matHeaderCellDef>Total</th>
+                        <td mat-cell *matCellDef="let exchange">
+                            <!-- Display if able to calculate the assets price in fiat -->
+                            <ng-container *ngIf="assetPriceInFiat && exchange.withdrawalFeeInKind && exchange.transactionFee;">
+                                {{exchange.transactionFee + (exchange.withdrawalFeeInKind * assetPriceInFiat) | currency}}
+                            </ng-container>
+
+                            <!-- Default -->
+                            <ng-container *ngIf="!exchange.withdrawalFeeInKind || !assetPriceInFiat">
+                                {{exchange.transactionFee | currency}}
+                            </ng-container>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</mat-sidenav-container>
